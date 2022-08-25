@@ -2,21 +2,77 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  rustfmt:
+    runs-on: 'ubuntu-latest'
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: rustfmt
+
+      - uses: actions/checkout@v3
+
+      - name: Cargo fmt
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: nightly
+          command: fmt
+          args: --all -- --check
+
+  clippy:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: clippy
+
+      - uses: actions/checkout@v3
+
+      - name: Cargo clippy
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: nightly
+          command: clippy
+          args: --workspace --exclude rust_analyzer_wasm --exclude contracts --all-targets --all-features
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: cargo build --verbose
+      - name: Pull docker image
+        run: docker pull docker.io/achimcc/ink-backend:latest
+      - name: Tag docker image
+        run: docker tag docker.io/achimcc/ink-backend:latest ink-backend
+      - name: Run tests
+        run: cargo test --workspace --exclude rust_analyzer_wasm --verbose
+
+  build_contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+      - uses: actions/checkout@v3
+      - name: Pull docker image
+        run: docker pull paritytech/contracts-ci-linux:production
+      - name: Build contracts
+        run: docker run --rm -i -v $(pwd):/sources paritytech/contracts-ci-linux:production cargo +nightly contract build --manifest-path=/sources/simple_counter/Cargo.toml
+        shell: bash
+        
