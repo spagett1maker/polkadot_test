@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.DEV_SERVER_A_ID }}
           script: |
             pwd
-            cd polkadot-dev
+            cd polkadot-test
             git fetch --all
             git checkout release-dev
             docker rm -f pdao-polkadot-colony-chain-dev-container
