@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - "release-dev"
+  workflow_run:
+    workflows: ["Rust"]
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       name:
