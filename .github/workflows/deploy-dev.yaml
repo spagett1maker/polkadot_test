@@ -7,7 +7,7 @@ on:
   workflow_run:
     workflows: ["Rust"]
     types:
-      - completed
+      - requested
   workflow_dispatch:
     inputs:
       name:
@@ -39,6 +39,6 @@ jobs:
             git fetch --all
             git checkout release-dev
             echo 'blockchain' | sudo -S docker rm -f pdao-polkadot-colony-chain-dev-container
-            echo '${{ secrets.DEV_SERVER_A_PW }}' | sudo -S docker build -t pdao-polkadot-colony-dev -f colony-chain/Dockerfile .
+            echo '${{ secrets.DEV_SERVER_A_PW }}' | sudo -S docker build -t pdao-polkadot-colony-chain-dev -f colony-chain/Dockerfile .
             echo '${{ secrets.DEV_SERVER_A_PW }}' | sudo -S docker image prune -f
-            echo '${{ secrets.DEV_SERVER_A_PW }}' | sudo -S docker run -p 8080:4000 --name pdao-polkadot-colony-dev-container -d pdao-polkadot-colony-dev
+            echo '${{ secrets.DEV_SERVER_A_PW }}' | sudo -S docker run -p 8080:4000 --name pdao-polkadot-colony-chain-dev-container -d pdao-polkadot-colony-chain-dev
