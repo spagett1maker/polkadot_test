@@ -34,7 +34,7 @@ jobs:
             cd polkadot-t
             git fetch --all
             git checkout release-dev
-            sudo docker rm -f pdao-polkadot-colony-chain-dev-container
+            echo 'blockchain' | sudo -S docker rm -f pdao-polkadot-colony-chain-dev-container
             sudo docker build -t pdao-polkadot-colony-dev -f colony-chain/Dockerfile .
             sudo docker image prune -f
             sudo docker run -p 8080:4000 --name pdao-polkadot-colony-dev-container -d pdao-polkadot-colony-dev
