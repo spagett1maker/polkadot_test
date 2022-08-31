@@ -42,3 +42,21 @@ jobs:
             docker build -t pdao-polkadot-colony-chain-dev -f colony-chain/Dockerfile .
             docker image prune -f
             docker run -p 4200:8080 --name pdao-polkadot-colony-chain-dev-container -d pdao-polkadot-colony-chain-dev
+
+      - name: Deploy explorer static file server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_A_HOST }}
+          port: ${{ secrets.DEV_SERVER_A_PORT }}
+          password: ${{ secrets.DEV_SERVER_A_PW }}
+          username: ${{ secrets.DEV_SERVER_A_ID }}
+          script: |
+            pwd
+            cd polkadot-t2
+            git fetch --all
+            git checkout release-dev
+            cd explorer
+            docker rm -f pdao-polkadot-explorer-dev-container
+            docker build -t pdao-polkadot-explorer-dev .
+            docker image prune -f
+            docker run -p 4100:8080 --name pdao-polkadot-explorer-dev-container -d pdao-polkadot-explorer-dev
