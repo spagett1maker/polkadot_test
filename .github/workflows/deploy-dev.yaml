@@ -59,4 +59,4 @@ jobs:
             docker rm -f pdao-polkadot-explorer-dev-container
             docker build -t pdao-polkadot-explorer-dev .
             docker image prune -f
-            docker run -p 4100:8080 --name pdao-polkadot-explorer-dev-container -d pdao-polkadot-explorer-dev
+            docker run -p 4300:8080 --name pdao-polkadot-explorer-dev-container -d pdao-polkadot-explorer-dev
