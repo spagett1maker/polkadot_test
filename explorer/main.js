@@ -9,8 +9,8 @@ methods = [
 ]
 
 endpoints = {
-    "PBC (Postch Beacon Chain)": "http://141.223.124.26:4200/Astar",
-    "PBC2 (Postch Beacon Chain)": "http://141.223.124.26:4200/Astar",
+    "PBC (Postch Beacon Chain)": "http://141.223.124.26:4200/astar",
+    "PBC2 (Postch Beacon Chain)": "http://141.223.124.26:4200/astar",
 }
 
 window.onload = async function () {
