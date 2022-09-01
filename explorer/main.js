@@ -9,13 +9,13 @@ methods = [
 ]
 
 endpoints = {
-    "PBC (Postch Beacon Chain)": "http://141.223.124.26:4000/dummy",
-    "PBC2 (Postch Beacon Chain)": "http://141.223.124.26:4000/dummy",
+    "PBC (Postch Beacon Chain)": "http://141.223.124.26:4200/Astar",
+    "PBC2 (Postch Beacon Chain)": "http://141.223.124.26:4200/Astar",
 }
 
-window.onload = async function(){
+window.onload = async function () {
 
-    for ([title, url] of Object.entries(endpoints)){
+    for ([title, url] of Object.entries(endpoints)) {
         let info = await fetch_data(url)
         info.title = title
         info.url = url
@@ -25,7 +25,7 @@ window.onload = async function(){
 
 }
 
-async function fetch_data(url){
+async function fetch_data(url) {
     let info = {
         content: {}
     }
@@ -38,10 +38,10 @@ async function fetch_data(url){
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({method: method, params: {}})
+            body: JSON.stringify({ method: method, params: {} })
         })
-        .then(res => res.json())
-        .then(res => info.content[method] = res)
+            .then(res => res.json())
+            .then(res => info.content[method] = res)
 
     }
     return info
